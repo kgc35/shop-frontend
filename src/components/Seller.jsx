@@ -10,15 +10,20 @@ class Seller extends Component {
         <Link to="/">
           <button>Back Home</button>
         </Link>
-        {/* <NewItemForm addItem={this.props.addItem} /> */}
+
         <div>
           <h2>{this.props.sellerObj.name}</h2>
           <img src={this.props.sellerObj.profile_img} />
           <p>{this.props.sellerObj.description}</p>
           <p>Rating: {this.props.sellerObj.seller_rating}</p>
           <p>{this.props.sellerObj.email}</p>
+
           <div className="items-container">
             <h2>My Items for sale</h2>
+            <NewItemForm
+              sellerObj={this.props.sellerObj}
+              addItem={this.props.addItem}
+            />
             {this.props.sellerObj.items.map((itemObj) => (
               <SellerItem
                 key={itemObj.id}

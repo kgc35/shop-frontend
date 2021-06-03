@@ -29,12 +29,11 @@ class App extends React.Component {
 
   handleClickedSeller = (sellerObj) => {
     this.setState({ currentSeller: sellerObj });
-    console.log(this.props.history);
     this.props.history.push("/seller");
     // return <Redirect to="/seller" />;
   };
 
-  addItem = (event, newItem) => {
+  addItem = (event, newItem, updt) => {
     event.preventDefault();
     fetch("http://localhost:9292/items", {
       method: "POST",
@@ -49,9 +48,10 @@ class App extends React.Component {
           .then((res) => res.json())
           .then((dbSellers) => {
             this.setState({
-              itemsArr: [...this.state.transactionsArr, newItemData],
+              itemsArr: [...this.state.itemsArr, newItemData],
               sellersArr: [dbSellers],
             });
+            updt();
           });
       });
   };
@@ -89,6 +89,8 @@ class App extends React.Component {
             path="/seller"
             component={(props) => (
               <Seller
+                {...props}
+                key={this.state.currentSeller.id}
                 sellerObj={this.state.currentSeller}
                 addItem={this.addItem}
               />
