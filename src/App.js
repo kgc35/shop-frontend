@@ -1,9 +1,9 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-
+import { Route, Switch } from "react-router-dom";
 import Seller from "./components/Seller";
 import ItemContainer from "./components/ItemContainer";
+import { withRouter, Redirect } from "react-router-dom";
 
 class App extends React.Component {
   state = {
@@ -27,42 +27,90 @@ class App extends React.Component {
       });
   }
 
-  handleClickedSeller = (sellerObj, props) => {
+  handleClickedSeller = (sellerObj) => {
     this.setState({ currentSeller: sellerObj });
-    props.history.push("/seller");
+    console.log(this.props.history);
+    this.props.history.push("/seller");
+    // return <Redirect to="/seller" />;
   };
 
+  addItem = (event, newItem) => {
+    event.preventDefault();
+    fetch("http://localhost:9292/items", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newItem),
+    })
+      .then((resp) => resp.json())
+      .then((newItemData) => {
+        fetch("http://localhost:9292/sellers")
+          .then((res) => res.json())
+          .then((dbSellers) => {
+            this.setState({
+              itemsArr: [...this.state.transactionsArr, newItemData],
+              sellersArr: [dbSellers],
+            });
+          });
+      });
+  };
+
+  // deleteItem = (event) => {
+  //   event.preventDefault();
+  //   fetch(`http://localhost:9292/items/${event.id}`, {
+  //     method: "DELETE",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(newItem),
+  //   })
+  //     .then((resp) => resp.json())
+  //     .then((newItemData) => {
+  //       fetch("http://localhost:9292/sellers")
+  //         .then((res) => res.json())
+  //         .then((dbSellers) => {
+  //           this.setState({
+  //             itemsArr: [...this.state.transactionsArr, newItemData],
+  //             sellersArr: [dbSellers],
+  //           });
+  //         });
+  //     });
+  // };
+
   render() {
-    console.log(this.state.currentSeller);
+    // console.log(this.state.currentSeller);
     return (
-      <Router>
-        <div>
-          <Switch>
-            <Route
-              exact
-              path="/"
-              component={(props) => (
-                <ItemContainer
-                  {...props}
-                  sellersArr={this.state.sellersArr}
-                  itemsArr={this.state.itemsArr}
-                  handleClickedSeller={this.handleClickedSeller}
-                />
-              )}
-            />
-            <Route
-              exact
-              path="/seller"
-              component={(props) => (
-                <Seller {...props} sellerObj={this.state.currentSeller} />
-              )}
-            />
-            ;
-          </Switch>
-        </div>
-      </Router>
+      // <Router>
+      <div>
+        <Switch>
+          <Route
+            exact
+            path="/seller"
+            component={(props) => (
+              <Seller
+                sellerObj={this.state.currentSeller}
+                addItem={this.addItem}
+              />
+            )}
+          />
+          <Route
+            exact
+            path="/"
+            component={(props) => (
+              <ItemContainer
+                {...props}
+                sellersArr={this.state.sellersArr}
+                itemsArr={this.state.itemsArr}
+                handleClickedSeller={this.handleClickedSeller}
+              />
+            )}
+          />
+        </Switch>
+      </div>
+      // </Router>
     );
   }
 }
 
-export default App;
+export default withRouter(App);

@@ -8,12 +8,12 @@ class ItemContainer extends Component {
         {this.props.itemsArr.length > 0 &&
           this.props.itemsArr.map((itemObj) => (
             <Item
+              props={this.props}
               key={itemObj.id}
               itemObj={itemObj}
               seller={this.props.sellersArr.filter(
                 (seller) => seller.id === itemObj.seller_id
               )}
-              history={this.props.history}
               handleClickedSeller={this.props.handleClickedSeller}
             />
           ))}
