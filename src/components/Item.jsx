@@ -6,7 +6,7 @@ class Item extends Component {
   render() {
     // console.log("test", this.props.seller[0]);
     return (
-      <div id="Item" className="w3-card w3-pale-blue">
+      <div className="item">
         <h2>{this.props.itemObj.name}</h2>
         <img src={this.props.itemObj.item_img} />
         <p>{this.props.itemObj.description}</p>

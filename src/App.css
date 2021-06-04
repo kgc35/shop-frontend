@@ -37,11 +37,63 @@
   }
 }
 img {
-  width: 200px;
-  height: auto;
+  width: 100px;
+  height: 100px;
 }
 #items {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  background-color: pink;
+}
+.item {
+  border: grey solid 1px;
+  padding: 1rem;
+  width: 20rem;
+  height:fit-content;
+  display: inline-grid;
+  margin: 1rem 2rem;
+  box-shadow: 3px 4px #e04b52;
+  background-color: white;
+  border-width: 3px;
+}
+
+.item h2{
+  text-align: center;
+}
+
+.title {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  padding: 1em;
+  margin-bottom: 2em;
+  background-color: rgb(192, 45, 26);
+  color: #fff;
+}
+.items-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+.seller-info{
+  border: grey solid 1px;
+  padding: 1rem;
+  width: 20rem;
+  height:fit-content;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1rem;
+  box-shadow: 3px 4px #e04b52;
+  background-color: white;
+  border-width: 3px;
+}
+.my-items{
+  text-align: center;
+}
+.Seller{
+  background-color: pink;
 }

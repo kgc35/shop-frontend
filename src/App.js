@@ -33,7 +33,7 @@ class App extends React.Component {
     // return <Redirect to="/seller" />;
   };
 
-  addItem = (event, newItem, updt) => {
+  addItem = (event, newItem) => {
     event.preventDefault();
     fetch("http://localhost:9292/items", {
       method: "POST",
@@ -51,32 +51,29 @@ class App extends React.Component {
               itemsArr: [...this.state.itemsArr, newItemData],
               sellersArr: [dbSellers],
             });
-            updt();
           });
       });
   };
 
-  // deleteItem = (event) => {
-  //   event.preventDefault();
-  //   fetch(`http://localhost:9292/items/${event.id}`, {
-  //     method: "DELETE",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(newItem),
-  //   })
-  //     .then((resp) => resp.json())
-  //     .then((newItemData) => {
-  //       fetch("http://localhost:9292/sellers")
-  //         .then((res) => res.json())
-  //         .then((dbSellers) => {
-  //           this.setState({
-  //             itemsArr: [...this.state.transactionsArr, newItemData],
-  //             sellersArr: [dbSellers],
-  //           });
-  //         });
-  //     });
-  // };
+  deleteItem = (event, id) => {
+    event.preventDefault();
+    fetch(`http://localhost:9292/items/${id}`, {
+      method: "DELETE"
+    })
+      .then((resp) => resp.json())
+      .then((newItemData) => {
+        fetch("http://localhost:9292/sellers")
+          .then((res) => res.json())
+          .then((dbSellers) => {
+            this.setState({
+              itemsArr: [newItemData],
+              sellersArr: [dbSellers],
+            });
+          });
+      });
+  };
+
+
 
   render() {
     // console.log(this.state.currentSeller);
@@ -93,6 +90,7 @@ class App extends React.Component {
                 key={this.state.currentSeller.id}
                 sellerObj={this.state.currentSeller}
                 addItem={this.addItem}
+                deleteItem={this.deleteItem}
               />
             )}
           />

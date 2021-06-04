@@ -5,6 +5,9 @@ class ItemContainer extends Component {
   render() {
     return (
       <div id="items">
+        <div className="title">
+          <h1>The Electronics Store</h1>
+        </div>
         {this.props.itemsArr.length > 0 &&
           this.props.itemsArr.map((itemObj) => (
             <Item
