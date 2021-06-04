@@ -10,6 +10,7 @@ class App extends React.Component {
     sellersArr: [],
     itemsArr: [],
     currentSeller: {},
+    currentSeller_index: [],
   };
 
   componentDidMount() {
@@ -28,13 +29,18 @@ class App extends React.Component {
   }
 
   handleClickedSeller = (sellerObj) => {
-    this.setState({ currentSeller: sellerObj });
+    let currentSeller_index = this.state.sellersArr.indexOf(sellerObj);
+    this.setState({
+      currentSeller: sellerObj,
+      currentSeller_index: currentSeller_index,
+    });
     this.props.history.push("/seller");
     // return <Redirect to="/seller" />;
   };
 
   addItem = (event, newItem) => {
     event.preventDefault();
+
     fetch("http://localhost:9292/items", {
       method: "POST",
       headers: {
@@ -50,6 +56,7 @@ class App extends React.Component {
             this.setState({
               itemsArr: [...this.state.itemsArr, newItemData],
               sellersArr: [dbSellers],
+              currentSeller: dbSellers[this.state.currentSeller_index],
             });
           });
       });
@@ -58,25 +65,28 @@ class App extends React.Component {
   deleteItem = (event, id) => {
     event.preventDefault();
     fetch(`http://localhost:9292/items/${id}`, {
-      method: "DELETE"
+      method: "DELETE",
     })
       .then((resp) => resp.json())
-      .then((newItemData) => {
+      .then((deletedItemData) => {
         fetch("http://localhost:9292/sellers")
           .then((res) => res.json())
           .then((dbSellers) => {
+            
             this.setState({
-              itemsArr: [newItemData],
+              itemsArr: this.state.itemsArr.filter(
+                (item) => item !== deletedItemData
+              ),
               sellersArr: [dbSellers],
+              currentSeller: dbSellers[this.state.currentSeller_index],
             });
           });
       });
   };
 
-
-
   render() {
-    // console.log(this.state.currentSeller);
+    // console.log(this.state.sellersArr.indexOf(this.state.currentSeller)); //Why doesn't this work?
+    console.log(this.state.currentSeller_index);
     return (
       // <Router>
       <div>
@@ -87,7 +97,6 @@ class App extends React.Component {
             component={(props) => (
               <Seller
                 {...props}
-                key={this.state.currentSeller.id}
                 sellerObj={this.state.currentSeller}
                 addItem={this.addItem}
                 deleteItem={this.deleteItem}

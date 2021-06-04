@@ -8,7 +8,7 @@ class ItemContainer extends Component {
         <div className="title">
           <h1>The Electronics Store</h1>
         </div>
-        {this.props.itemsArr.length > 0 &&
+        {this.props.sellersArr.length > 0 &&
           this.props.itemsArr.map((itemObj) => (
             <Item
               props={this.props}
